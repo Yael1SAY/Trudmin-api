@@ -9,6 +9,8 @@ public interface IUsuarioDao {
 	List<Usuario> obtenerUsuario();
 
 	Usuario obtenerUsuarioId(long id);
+	
+	Usuario findByUserName(String nombreUsuario);
 
 	Usuario registrarUsuario(Usuario comprador);
 

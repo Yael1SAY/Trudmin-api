@@ -28,15 +28,16 @@ public class UsuarioController {
     @Secured("ROLE_ADMIN")
     @RequestMapping(value = "/", method = RequestMethod.GET)
     List<Usuario> obtenerUsuario(){
-        List<Usuario> usuario = usuarioService.obtenerUsuarios();
-        LOG.info("usuarios; " + usuario);
-        return usuario;
+        List<Usuario> usuarios = usuarioService.obtenerUsuarios();
+        return usuarios;
     }
 
     @Secured("ROLE_ADMIN")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     Usuario obtenerUsuarioId(@PathVariable long id){
-        return usuarioService.obtenerUsuarioId(id);
+    	Usuario usuario = new Usuario();
+    	usuario = usuarioService.obtenerUsuarioId(id);
+        return usuario;
     }
 
     @Secured("ROLE_ADMIN")

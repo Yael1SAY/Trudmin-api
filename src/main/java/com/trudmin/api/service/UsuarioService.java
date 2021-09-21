@@ -28,9 +28,6 @@ public class UsuarioService {
 
     public Usuario obtenerUsuarioId(long id){
     	Usuario comprador = usuarioDao.obtenerUsuarioId(id);
-        if (comprador.isEstatus()){
-            return null;
-        }
         return comprador;
     }
 

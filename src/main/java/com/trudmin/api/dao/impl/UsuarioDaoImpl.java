@@ -24,13 +24,15 @@ public class UsuarioDaoImpl implements IUsuarioDao{
     @Transactional
     @Override
     public List<Usuario> obtenerUsuario() {
-        final String LISTAR_COMPRADORES = "From Usuario c where c.estatus = true";
-        return entityManager.createQuery(LISTAR_COMPRADORES,Usuario.class).getResultList();
+        final String LISTAR_COMPRADORES = "Select u From Usuario u where u.estatus = true";
+        return entityManager.createQuery(LISTAR_COMPRADORES, Usuario.class).getResultList();
     }
 
     @Override
     public Usuario obtenerUsuarioId(long id) {
-        return entityManager.find(Usuario.class, id);
+    	Usuario usuario = new Usuario();
+    	usuario = entityManager.find(Usuario.class, id);
+        return usuario;
     }
 
     @Override
@@ -50,6 +52,14 @@ public class UsuarioDaoImpl implements IUsuarioDao{
     public void eliminarUsuario(long id) {
         final String DELETE_USUARIO = "UPDATE Usuario c SET c.estatus = false where c.id = :id";
         entityManager.createQuery(DELETE_USUARIO).setParameter("id", id).executeUpdate();
+    }
+    
+    @Override
+    public Usuario findByUserName(String nombreUsuario) {
+    	final String USUARIO = "From Usuario u where u.nombreUsuario = :nombreUsuario";
+    	Usuario usuario = new Usuario();
+    	usuario = entityManager.createQuery(USUARIO,Usuario.class).setParameter("nombreUsuario", nombreUsuario).getSingleResult();
+        return usuario;
     }
 
 }

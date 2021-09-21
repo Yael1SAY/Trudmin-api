@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.trudmin.api.dao.IUsuarioAuthDao;
+import com.trudmin.api.dao.IUsuarioDao;
 import com.trudmin.api.model.Usuario;
 
 import java.util.List;
@@ -25,17 +26,20 @@ public class usuarioServiceAuth implements UserDetailsService, IUsuarioServiceAu
 
     @Autowired
     private IUsuarioAuthDao usuarioDao;
+    
+	//@Autowired
+    //private IUsuarioDao usuarioDao;
 
     @Override
     @Transactional(readOnly = true)
-    public UserDetails loadUserByUsername(String NombreUsuario) throws UsernameNotFoundException {
-
-        Usuario usuario = usuarioDao.findByUsername2(NombreUsuario);
-        logger.info("Usuario: ", usuario);
+    public UserDetails loadUserByUsername(String nombreUsuario) throws UsernameNotFoundException {
+    	logger.info("NombreUsuario: " + nombreUsuario);
+        Usuario usuario = usuarioDao.findByUsername2(nombreUsuario);
+        logger.info("Usuario: " + usuario);
 
         if (usuario == null){
-            logger.error("Error en el Login: no existe el Usuario con Nombre de usuario: " + NombreUsuario + " en el sistema");
-            throw new UsernameNotFoundException("Error en el Login: no existe el Usuario con nombre de usuario : " + NombreUsuario + " en el sistema");
+            logger.error("Error en el Login: no existe el Usuario con Nombre de usuario: " + nombreUsuario + " en el sistema");
+            throw new UsernameNotFoundException("Error en el Login: no existe el Usuario con nombre de usuario : " + nombreUsuario + " en el sistema");
         }
         List<GrantedAuthority> authorities = usuario.getRoles()
                 .stream()
