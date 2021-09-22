@@ -21,7 +21,7 @@ public class SwaggerConfig {
 	public static final String AUTHORIZATION_HEADER = "Authorization";
 
     private ApiInfo apiInfo() {
-        return new ApiInfo("My REST API",
+        return new ApiInfo("My REST API TRUDMIN",
                 "Some custom description of API.",
                 "1.0",
                 "",
