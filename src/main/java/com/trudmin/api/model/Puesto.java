@@ -9,33 +9,25 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "rol")
-public class Rol implements Serializable {
+@Table(name = "puesto")
+public class Puesto implements Serializable {
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "rol_id")
-    private long id;
-
-    @Column(unique = true, length = 20)
-    private String nombreRol;
-    
-    //@JsonIgnore
-    //@ManyToMany(mappedBy = "roles")
-    //private List<Usuario> usuarios;
-    
-    private static final long serialVersionUID = 1L;
-    
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "puesto_id")
+	private long puestoId;
+	
+	private String puesto;
+	
+	private static final long serialVersionUID = 1L;
 }

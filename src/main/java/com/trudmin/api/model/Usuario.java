@@ -21,8 +21,6 @@ import lombok.Setter;
 @Table(name = "usuario")
 public class Usuario implements Serializable{
 
-	private static final long serialVersionUID = 1L;
-
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "user_id")
@@ -64,5 +62,8 @@ public class Usuario implements Serializable{
             inverseJoinColumns = {@JoinColumn(name = "rol_id")}
     )
     private List<Rol> roles;
+	
+
+	private static final long serialVersionUID = 1L;
 	
 }

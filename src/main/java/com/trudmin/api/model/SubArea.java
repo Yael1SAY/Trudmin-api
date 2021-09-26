@@ -1,5 +1,7 @@
 package com.trudmin.api.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,7 +23,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Table(name = "subarea")
-public class SubArea {
+public class SubArea implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -36,5 +38,8 @@ public class SubArea {
 	
 	//@OneToOne(mappedBy = "sub_area", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	//private Empleado empleado;
+	
+
+	private static final long serialVersionUID = 1L;
 
 }

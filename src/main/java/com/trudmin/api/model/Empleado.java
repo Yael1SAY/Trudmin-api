@@ -1,5 +1,6 @@
 package com.trudmin.api.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -23,19 +24,21 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Table(name = "empleado")
-public class Empleado {
-	
+public class Empleado implements Serializable {
+
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "empleado_id")
 	private long empleadoId;
 	
+	@Column(name = "clave", nullable = false, unique = true)
 	private String clave;
 	
-	private String jefe;
-	
-	private String puesto;
-		
+	@JoinColumn(name = "empleado_id")
+    @OneToOne(fetch = FetchType.LAZY)
+	private Empleado jefeId;
+			
 	@Column(name = "fecha_inicio")
 	private Date fechaInicio;
 	
@@ -49,5 +52,11 @@ public class Empleado {
 	@JoinColumn(name = "subarea_id")
     @OneToOne(fetch = FetchType.LAZY)
     private SubArea subArea;
+	
+	@JoinColumn(name = "puesto_id")
+    @OneToOne(fetch = FetchType.LAZY)
+	private Puesto puesto;
+
+	private static final long serialVersionUID = 1L;
 
 }

@@ -27,7 +27,7 @@ public class UsuarioController {
 
     @Secured("ROLE_ADMIN")
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    List<Usuario> obtenerUsuario(){
+    List<Usuario> obtenerUsuarios(){
         List<Usuario> usuarios = usuarioService.obtenerUsuarios();
         return usuarios;
     }
