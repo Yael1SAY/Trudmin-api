@@ -7,5 +7,9 @@ import com.trudmin.api.model.Servicio;
 public interface IServicioDao {
 	
 	List<Servicio> obtenerServicioPorPeriodo(String periodo);
+	
+	Servicio crearServicioComprador(Servicio servicio);
+	
+	long elimiarServicio(long idServicio);
 
 }

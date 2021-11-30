@@ -13,8 +13,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,7 +29,7 @@ public class Servicio implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_servicio")
-	private int idServicio;
+	private long idServicio;
 	
 	//@Column(name = "empleado_id")
 	//private int empleadoId;
@@ -59,9 +57,8 @@ public class Servicio implements Serializable{
 	private byte capturaTiempo;
 	private int total;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "empleado_id")
-	@JsonIgnore
 	private Empleado empleado;
 
 	private static final long serialVersionUID = 1L;

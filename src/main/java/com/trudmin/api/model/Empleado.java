@@ -3,6 +3,7 @@ package com.trudmin.api.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -26,18 +27,13 @@ import lombok.Setter;
 @Table(name = "empleado")
 public class Empleado implements Serializable {
 
-
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "empleado_id")
 	private long empleadoId;
 	
-	@Column(name = "clave", nullable = false, unique = true)
+	@Column(name = "clave", unique = true)
 	private String clave;
-	
-	@JoinColumn(name = "empleado_id")
-    @OneToOne(fetch = FetchType.LAZY)
-	private Empleado jefeId;
 			
 	@Column(name = "fecha_inicio")
 	private Date fechaInicio;
@@ -46,16 +42,19 @@ public class Empleado implements Serializable {
 	private Date fechaFin;
 	
 	@JoinColumn(name = "user_id")
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Usuario usuario;
 	
 	@JoinColumn(name = "subarea_id")
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private SubArea subArea;
 	
 	@JoinColumn(name = "puesto_id")
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Puesto puesto;
+	
+	//@OneToMany(mappedBy = "empleado", cascade = CascadeType.ALL)
+	//private Servicio servicio;
 
 	private static final long serialVersionUID = 1L;
 

@@ -23,5 +23,29 @@ public class ServicioDaoImpl implements IServicioDao{
 		final String LISTAR_SERVICIOS = "Select s From Servicio s where s.periodo = :periodo";
         return entityManager.createQuery(LISTAR_SERVICIOS, Servicio.class).setParameter("periodo", periodo).getResultList();
 	}
+	
+	@Override
+	public Servicio crearServicioComprador(Servicio servicio) {
+		Servicio servicioResponse = new Servicio();
+		try {
+			servicioResponse = entityManager.merge(servicio);
+			entityManager.getTransaction().commit();
+			return servicioResponse;
+		} catch (Exception e) {
+			entityManager.getTransaction().rollback();
+			return servicioResponse;
+		}
+	}
+	
+	public Servicio actualizarServicio(Servicio servicio) {
+		return servicio;
+	}
+
+	@Override
+	public long elimiarServicio(long idServicio) {
+		Servicio servicio = entityManager.find(Servicio.class, idServicio);
+		entityManager.remove(servicio);
+		return idServicio;
+	}
 
 }

@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.trudmin.api.dto.UsuarioDTO;
+import com.trudmin.api.dto.UsuarioLoginDTO;
 import com.trudmin.api.model.Usuario;
 import com.trudmin.api.service.UsuarioService;
 
@@ -24,16 +26,23 @@ public class UsuarioController {
 
     @Autowired
     UsuarioService usuarioService;
+    
+//    @Secured("ROLE_ADMIN")
+//    @RequestMapping(value = "/login", method = RequestMethod.POST)
+//    UsuarioDTO login(@RequestBody UsuarioLoginDTO usuarioLogin){
+//        List<Usuario> usuarios = usuarioService.obtenerUsuarios();
+//        return usuarios;
+//    }
 
     @Secured("ROLE_ADMIN")
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = "/obtenerUsuarios", method = RequestMethod.GET)
     List<Usuario> obtenerUsuarios(){
         List<Usuario> usuarios = usuarioService.obtenerUsuarios();
         return usuarios;
     }
 
     @Secured("ROLE_ADMIN")
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/obtenerUsuario{id}", method = RequestMethod.GET)
     Usuario obtenerUsuarioId(@PathVariable long id){
     	Usuario usuario = new Usuario();
     	usuario = usuarioService.obtenerUsuarioId(id);
@@ -41,19 +50,19 @@ public class UsuarioController {
     }
 
     @Secured("ROLE_ADMIN")
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @RequestMapping(value = "/crearUsuario", method = RequestMethod.POST)
     Usuario registrarUsuario(@RequestBody Usuario usuario){
         return usuarioService.registrarUsuario(usuario);
     }
 
     @Secured("ROLE_ADMIN")
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/actualizarUsuario{id}", method = RequestMethod.PUT)
     Usuario actualizarUsuario(@RequestBody Usuario usuario){
         return usuarioService.actualizarUsuario(usuario);
     }
 
     @Secured("ROLE_ADMIN")
-    @RequestMapping(value = "delete/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "eliminarUsuatio/{id}", method = RequestMethod.PUT)
     void eliminarUsuario(@PathVariable long id){
     	usuarioService.eliminarUsuario(id);
     }

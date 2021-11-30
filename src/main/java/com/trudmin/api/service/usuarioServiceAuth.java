@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.trudmin.api.dao.IUsuarioAuthDao;
-import com.trudmin.api.dao.IUsuarioDao;
 import com.trudmin.api.model.Usuario;
 
 import java.util.List;
@@ -46,7 +45,8 @@ public class usuarioServiceAuth implements UserDetailsService, IUsuarioServiceAu
                 .map(role -> new SimpleGrantedAuthority(role.getNombreRol()))
                 .peek(authority -> logger.info("Role: " + authority.getAuthority()))
                 .collect(Collectors.toList());
-        return new User(usuario.getNombreUsuario(), usuario.getPassword(), usuario.isEstatus(), true, true, true, authorities);
+        UserDetails userDetails = new User(usuario.getNombreUsuario(), usuario.getPassword(), usuario.isEstatus(), true, true, true, authorities);
+        return userDetails;
     }
 
     @Override
