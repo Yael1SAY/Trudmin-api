@@ -62,7 +62,7 @@ public class UsuarioController {
     }
 
     @Secured("ROLE_ADMIN")
-    @RequestMapping(value = "eliminarUsuatio/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/eliminarUsuatio/{id}", method = RequestMethod.PUT)
     void eliminarUsuario(@PathVariable long id){
     	usuarioService.eliminarUsuario(id);
     }

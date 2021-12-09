@@ -23,29 +23,36 @@ public class ServicioCompradorController {
 	@Autowired
     ServicioService servicioService;
 
+	@Secured("ROLE_ADMIN")
+    @RequestMapping(value = "/obtenerServicios", method = RequestMethod.GET)
+    List<Servicio> obtenerServicios(){
+        List<Servicio> servicio = servicioService.obtenerServicios();
+        return servicio;
+    }
+	
     @Secured("ROLE_ADMIN")
-    @RequestMapping(value = "/{periodo}", method = RequestMethod.GET)
+    @RequestMapping(value = "/serviciosPeriodo/{periodo}", method = RequestMethod.GET)
     List<Servicio> obtenerServicioPorPeriodo(@PathVariable String periodo){
         List<Servicio> servicio = servicioService.obtenerServicioPorPeriodo(periodo);
         return servicio;
     }
     
     @Secured("ROLE_ADMIN")
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @RequestMapping(value = "/crearServicio", method = RequestMethod.POST)
     Servicio crearServicioComprador(@RequestBody ServicioDTO servicio) {
     	Servicio servicioComp = servicioService.crearServicioComprador(servicio);
     	return servicioComp;
     }
     
     @Secured("ROLE_ADMIN")
-    @RequestMapping(value = "/", method = RequestMethod.PUT)
+    @RequestMapping(value = "/actualizarServicio", method = RequestMethod.PUT)
     Servicio actualizarServicio(@RequestBody ServicioDTO servicioDto) {
     	Servicio servicioComp = servicioService.updateServicio(servicioDto);
     	return servicioComp;
     }
     
     @Secured("ROLE_ADMIN")
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/bajaServicio/{id}", method = RequestMethod.DELETE)
     long elimianrServicio(@PathVariable long id) {
     	//long servicioIdLong = servicioId;
     	long servicioIdEliminado = servicioService.eliminarServicio(id);

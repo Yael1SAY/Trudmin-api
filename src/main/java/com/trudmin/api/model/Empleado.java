@@ -41,6 +41,12 @@ public class Empleado implements Serializable {
 	@Column(name = "fecha_fin")
 	private Date fechaFin;
 	
+	@Column(name = "telefono")
+	private String telefono;
+	
+	@Column(name = "status")
+	private boolean estatus;
+	
 	@JoinColumn(name = "user_id")
     @OneToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Usuario usuario;

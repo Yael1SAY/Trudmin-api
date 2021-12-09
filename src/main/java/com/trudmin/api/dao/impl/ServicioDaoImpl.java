@@ -17,6 +17,12 @@ public class ServicioDaoImpl implements IServicioDao{
 	
     @PersistenceContext
     EntityManager entityManager;
+    
+    @Override
+	public List<Servicio> obtenerServicios() {
+		final String LISTAR_SERVICIOS = "Select s From Servicio s ";
+        return entityManager.createQuery(LISTAR_SERVICIOS, Servicio.class).getResultList();
+	}
 
 	@Override
 	public List<Servicio> obtenerServicioPorPeriodo(String periodo) {

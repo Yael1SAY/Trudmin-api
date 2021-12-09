@@ -19,9 +19,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class usuarioServiceAuth implements UserDetailsService, IUsuarioServiceAuth{
+public class UsuarioServiceAuth implements UserDetailsService, IUsuarioServiceAuth{
 	
-	private Logger logger = LoggerFactory.getLogger(usuarioServiceAuth.class);
+	private Logger logger = LoggerFactory.getLogger(UsuarioServiceAuth.class);
 
     @Autowired
     private IUsuarioAuthDao usuarioDao;

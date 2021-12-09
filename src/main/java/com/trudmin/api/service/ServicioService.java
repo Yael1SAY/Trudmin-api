@@ -23,6 +23,12 @@ public class ServicioService {
 	@Autowired
 	IEmpleadoDao empleadoDao;
 
+	public List<Servicio> obtenerServicios() {
+		List<Servicio> servicios = servicioDao.obtenerServicios();
+		LOG.info("Servicios: " + servicios.size());
+		return servicios;
+	}
+	
 	public List<Servicio> obtenerServicioPorPeriodo(String periodo) {
 		List<Servicio> servicios = servicioDao.obtenerServicioPorPeriodo(periodo);
 		LOG.info("Servicios: " + servicios.size());
