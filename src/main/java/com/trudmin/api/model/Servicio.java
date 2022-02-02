@@ -23,7 +23,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table
+@Table(name = "servicio")
 public class Servicio implements Serializable{
 	
 	@Id
