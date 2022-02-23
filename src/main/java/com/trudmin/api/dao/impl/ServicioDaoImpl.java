@@ -54,4 +54,13 @@ public class ServicioDaoImpl implements IServicioDao{
 		return idServicio;
 	}
 
+	@Override
+	public List<Servicio> obtenerServiciosCompradorPeriodo(long empleadoid, int anio) {
+		final String LISTAR_SERVICIOS = "Select s From Servicio s where s.empleado.empleadoId = :empleado_id AND s.anio = :anio";
+        return entityManager.createQuery(LISTAR_SERVICIOS, Servicio.class)
+        		.setParameter("empleado_id", empleadoid)
+        		.setParameter("anio", anio)
+        		.getResultList();
+	}
+
 }

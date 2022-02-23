@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.trudmin.api.dto.ServicioDTO;
@@ -27,6 +28,13 @@ public class ServicioCompradorController {
     @RequestMapping(value = "/obtenerServicios", method = RequestMethod.GET)
     List<Servicio> obtenerServicios(){
         List<Servicio> servicio = servicioService.obtenerServicios();
+        return servicio;
+    }
+
+	@Secured("ROLE_ADMIN")
+    @RequestMapping(value = "/obtenerServiciosPorCompradorAnio", method = RequestMethod.GET)
+    List<ServicioDTO> obtenerServiciosPorCompradorAnio(@RequestParam long empleadoId, @RequestParam int anio){
+        List<ServicioDTO> servicio = servicioService.obtenerServiciosCompradorPeriodo(empleadoId, anio);
         return servicio;
     }
 	

@@ -10,6 +10,8 @@ public interface IServicioDao {
 	
 	List<Servicio> obtenerServicioPorPeriodo(String periodo);
 	
+	List<Servicio> obtenerServiciosCompradorPeriodo(long clvCcomprador, int anio);
+	
 	Servicio crearServicioComprador(Servicio servicio);
 	
 	long elimiarServicio(long idServicio);

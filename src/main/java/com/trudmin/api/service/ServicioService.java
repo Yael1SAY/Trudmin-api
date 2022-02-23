@@ -1,5 +1,6 @@
 package com.trudmin.api.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -11,12 +12,15 @@ import com.trudmin.api.dao.IServicioDao;
 import com.trudmin.api.dto.ServicioDTO;
 import com.trudmin.api.model.Empleado;
 import com.trudmin.api.model.Servicio;
+import org.modelmapper.ModelMapper;
 
 @Service
 public class ServicioService {
 
 	private static final Logger LOG = Logger.getLogger(ServicioService.class.getName());
 
+	ModelMapper modelMapper = new ModelMapper();
+	
 	@Autowired
 	IServicioDao servicioDao;
 	
@@ -89,6 +93,17 @@ public class ServicioService {
 	public long eliminarServicio(long idServicio) {
 		long idServicioElimainado = servicioDao.elimiarServicio(idServicio);
 		return idServicioElimainado;
+	}
+	
+	public List<ServicioDTO> obtenerServiciosCompradorPeriodo(long empleadoId, int anio){
+		List<ServicioDTO> listServiciosDto = new ArrayList<ServicioDTO>();
+		List<Servicio> serviciosResponse = servicioDao.obtenerServiciosCompradorPeriodo(empleadoId, anio);
+		for(Servicio servicioResp : serviciosResponse) {
+			ServicioDTO servicioDto = new ServicioDTO();
+			modelMapper.map(servicioResp, servicioDto);
+			listServiciosDto.add(servicioDto);
+		}
+		return listServiciosDto;
 	}
 
 }
