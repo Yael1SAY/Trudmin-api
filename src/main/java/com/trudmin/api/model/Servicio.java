@@ -27,7 +27,7 @@ import lombok.Setter;
 public class Servicio implements Serializable{
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name = "id_servicio")
 	private long idServicio;
 	

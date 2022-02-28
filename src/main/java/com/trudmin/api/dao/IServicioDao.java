@@ -15,5 +15,7 @@ public interface IServicioDao {
 	Servicio crearServicioComprador(Servicio servicio);
 	
 	long elimiarServicio(long idServicio);
+	
+	Servicio obtenerServicioPorId(long idServicio);
 
 }

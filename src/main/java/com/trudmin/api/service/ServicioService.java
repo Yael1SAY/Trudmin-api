@@ -105,5 +105,12 @@ public class ServicioService {
 		}
 		return listServiciosDto;
 	}
+	
+	public ServicioDTO obtenerServicioPorId(long servicioId) {
+		Servicio servicio = servicioDao.obtenerServicioPorId(servicioId);
+		ServicioDTO servicioDto = new ServicioDTO();
+		modelMapper.map(servicio, servicioDto);
+		return servicioDto;
+	}
 
 }

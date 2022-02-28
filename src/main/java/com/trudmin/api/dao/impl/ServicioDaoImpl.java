@@ -31,11 +31,13 @@ public class ServicioDaoImpl implements IServicioDao{
 	}
 	
 	@Override
+	@Transactional
 	public Servicio crearServicioComprador(Servicio servicio) {
 		Servicio servicioResponse = new Servicio();
 		try {
 			servicioResponse = entityManager.merge(servicio);
-			entityManager.getTransaction().commit();
+			//entityManager.getTransaction().commit();
+			System.out.println("Respuesta insercion: " + servicioResponse.toString());
 			return servicioResponse;
 		} catch (Exception e) {
 			entityManager.getTransaction().rollback();
@@ -49,8 +51,12 @@ public class ServicioDaoImpl implements IServicioDao{
 
 	@Override
 	public long elimiarServicio(long idServicio) {
-		Servicio servicio = entityManager.find(Servicio.class, idServicio);
-		entityManager.remove(servicio);
+		//Servicio servicio = entityManager.find(Servicio.class, idServicio);
+		//entityManager.remove(servicio);
+		final String ELIMINAR_SERVICIO = "delete from Servicio where idServicio = :id";
+		entityManager.createQuery(ELIMINAR_SERVICIO)
+		  .setParameter("id", idServicio)
+		  .executeUpdate();
 		return idServicio;
 	}
 
@@ -63,4 +69,10 @@ public class ServicioDaoImpl implements IServicioDao{
         		.getResultList();
 	}
 
+	@Override
+	public Servicio obtenerServicioPorId(long idServicio) {
+		final String SERVICIO = "Select s From Servicio s where s.idServicio = :idServicio";
+		return entityManager.createQuery(SERVICIO, Servicio.class)
+				.setParameter("idServicio", idServicio).getSingleResult();
+	}
 }
