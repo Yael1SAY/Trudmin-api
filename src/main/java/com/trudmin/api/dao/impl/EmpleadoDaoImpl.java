@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import com.trudmin.api.dao.IEmpleadoDao;
 import com.trudmin.api.model.Empleado;
-import com.trudmin.api.model.Usuario;
 
 @Transactional
 @Repository

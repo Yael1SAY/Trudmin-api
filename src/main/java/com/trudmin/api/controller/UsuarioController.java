@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.trudmin.api.dto.UsuarioDTO;
-import com.trudmin.api.dto.UsuarioLoginDTO;
 import com.trudmin.api.model.Usuario;
 import com.trudmin.api.service.UsuarioService;
 
@@ -44,6 +42,7 @@ public class UsuarioController {
     @Secured("ROLE_ADMIN")
     @RequestMapping(value = "/obtenerUsuario{id}", method = RequestMethod.GET)
     Usuario obtenerUsuarioId(@PathVariable long id){
+    	LOG.info("Id de usuario a obtener: " + id);
     	Usuario usuario = new Usuario();
     	usuario = usuarioService.obtenerUsuarioId(id);
         return usuario;

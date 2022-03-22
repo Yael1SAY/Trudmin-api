@@ -25,6 +25,7 @@ public class UsuarioDaoImpl implements IUsuarioDao{
     @Override
     public List<Usuario> obtenerUsuario() {
         final String LISTAR_COMPRADORES = "Select u From Usuario u where u.estatus = true";
+        LOG.info(LISTAR_COMPRADORES);
         return entityManager.createQuery(LISTAR_COMPRADORES, Usuario.class).getResultList();
     }
 

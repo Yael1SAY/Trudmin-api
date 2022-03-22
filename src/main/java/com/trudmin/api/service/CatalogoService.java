@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import com.trudmin.api.dao.ICatalogoDao;
 import com.trudmin.api.dto.AreaDto;
 import com.trudmin.api.dto.CatalogClaveEmpleadoDTO;
-import com.trudmin.api.dto.EmpleadoDTO;
 import com.trudmin.api.dto.PuestoDTO;
 import com.trudmin.api.dto.SubAreaDto;
 import com.trudmin.api.model.Area;

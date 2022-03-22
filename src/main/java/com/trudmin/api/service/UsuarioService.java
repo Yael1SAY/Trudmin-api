@@ -43,6 +43,7 @@ public class UsuarioService {
     }
 
     public void eliminarUsuario(long id){
+    	LOG.info("Id de Usuario a eliminar: " + id);
     	usuarioDao.eliminarUsuario(id);
     }
 
