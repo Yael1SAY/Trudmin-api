@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -52,11 +53,11 @@ public class Empleado implements Serializable {
 	private Usuario usuario;
 	
 	@JoinColumn(name = "subarea_id")
-    @OneToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private SubArea subArea;
 	
 	@JoinColumn(name = "puesto_id")
-    @OneToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Puesto puesto;
 	
 	//@OneToMany(mappedBy = "empleado", cascade = CascadeType.ALL)
