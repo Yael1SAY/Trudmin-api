@@ -37,10 +37,9 @@ public class UsuarioDaoImpl implements IUsuarioDao{
     }
 
     @Override
-    public Usuario registrarUsuario(Usuario comprador) {
-        comprador.setEstatus(true);
-        entityManager.merge(comprador);
-        return comprador;
+    public Usuario registrarUsuario(Usuario usuario) {
+        entityManager.merge(usuario);
+        return usuario;
     }
 
     @Override

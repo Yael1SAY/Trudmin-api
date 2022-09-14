@@ -12,9 +12,9 @@ public interface IUsuarioDao {
 	
 	Usuario findByUserName(String nombreUsuario);
 
-	Usuario registrarUsuario(Usuario comprador);
+	Usuario registrarUsuario(Usuario usuario);
 
-    Usuario actualizarUsuario(Usuario comprador);
+    Usuario actualizarUsuario(Usuario usuario);
 
     void eliminarUsuario(long id);
 }

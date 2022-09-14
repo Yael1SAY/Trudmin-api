@@ -45,7 +45,7 @@ public class Empleado implements Serializable {
 	@Column(name = "telefono")
 	private String telefono;
 	
-	@Column(name = "status")
+	@Column(name = "status", nullable = false)
 	private boolean estatus;
 	
 	@JoinColumn(name = "user_id")

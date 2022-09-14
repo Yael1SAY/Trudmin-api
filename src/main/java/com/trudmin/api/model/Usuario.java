@@ -12,9 +12,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -22,14 +24,13 @@ import lombok.Setter;
 public class Usuario implements Serializable{
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "user_id")
+	@JsonIgnore
 	private long id;
 	
 	@Column(name = "nombre_usuario")
 	private String nombreUsuario;
 	
-	@JsonIgnore
 	@Column(nullable = true)
     private String password;
 	
@@ -45,13 +46,16 @@ public class Usuario implements Serializable{
 	@Column(name = "email")
 	private String email;
 	
+	@JsonIgnore
 	@Column(name = "fecha_cracion")
 	@Temporal(TemporalType.DATE)
 	private Date fechaCreacion;
 	
+	@JsonIgnore
 	@Column(name = "status")
 	private boolean estatus;
 	
+	@JsonIgnore
 	@ManyToMany(cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE
