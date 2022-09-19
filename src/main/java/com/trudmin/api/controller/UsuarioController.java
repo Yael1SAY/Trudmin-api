@@ -1,9 +1,14 @@
 package com.trudmin.api.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -51,8 +56,28 @@ public class UsuarioController {
 
     // @Secured("ROLE_ADMIN")
     @RequestMapping(value = "/crearUsuario", method = RequestMethod.POST)
-    UsuarioDTO registrarUsuario(@RequestBody Usuario usuario) {
-        return usuarioService.registrarUsuario(usuario);
+    public ResponseEntity<?> registrarUsuario(@RequestBody Usuario usuario) {
+        UsuarioDTO usuarioDto = null;
+        Map<String, Object> response = new HashMap<>(); 
+        try {
+            usuarioDto = usuarioService.registrarUsuario(usuario);
+        } catch (DataAccessException e) {
+            response.put("message", "Error al realizar el alta del usuario " + usuario.getNombre());
+            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            response.put("status", 404);
+            e.printStackTrace();
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            response.put("message", "Error en el servidor, contactar al administrador ");
+            response.put("error", e.getMessage());
+            response.put("ststus", 404);
+            e.printStackTrace();
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+        }
+        response.put("data", usuarioDto);
+        response.put("message", "El usuario ".concat(usuarioDto.getNombreUsuario()).concat(" se registro correctamnete"));
+        response.put("status", 200);
+        return new ResponseEntity< Map<String, Object>>(response, HttpStatus.OK);
     }
 
     @Secured("ROLE_ADMIN")

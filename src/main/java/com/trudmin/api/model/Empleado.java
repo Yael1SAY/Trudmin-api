@@ -42,7 +42,7 @@ public class Empleado implements Serializable {
 	@Column(name = "fecha_fin")
 	private Date fechaFin;
 	
-	@Column(name = "telefono")
+	@Column(name = "telefono", unique = true)
 	private String telefono;
 	
 	@Column(name = "status", nullable = false)
