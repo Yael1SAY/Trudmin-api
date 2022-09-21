@@ -16,7 +16,6 @@ import com.trudmin.api.report.JasperReportManager;
 import com.trudmin.api.report.enums.TipoReporteEnum;
 
 import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperExportManager;
 
 @Service
 public class ReporteProductividadService {

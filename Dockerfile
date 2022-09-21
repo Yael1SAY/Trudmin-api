@@ -1,6 +1,10 @@
 FROM openjdk:11
 #RUN addgroup -S desarrollo && adduser -S say -G desarrollo
 #USER say:desarrollo
+ARG MYAPP_JDBC_URL
+ARG MYAPP_JDBC_USER
+ARG MYAPP_JDBC_PASS
+
 ENV JAVA_OPTS=""
 ARG JAR_FILE
 ADD ${JAR_FILE} app.jar
