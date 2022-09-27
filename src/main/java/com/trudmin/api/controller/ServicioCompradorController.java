@@ -54,7 +54,7 @@ public class ServicioCompradorController {
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
         }
         response.put("data", servicio);
-        response.put("message", "Se obtovo correctamente la lista de productividad");
+        response.put("message", "Se obtuvo correctamente la lista de productividad");
         response.put("status", 200);
 		
 		return new ResponseEntity< Map<String, Object>>(response, HttpStatus.OK);
