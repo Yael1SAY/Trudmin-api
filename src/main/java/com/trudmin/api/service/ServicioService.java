@@ -27,10 +27,17 @@ public class ServicioService {
 	@Autowired
 	IEmpleadoDao empleadoDao;
 
-	public List<Servicio> obtenerServicios() {
+	public List<ServicioDTO> obtenerServicios() {
 		List<Servicio> servicios = servicioDao.obtenerServicios();
-		LOG.info("Servicios: " + servicios.size());
-		return servicios;
+		List<ServicioDTO> serviciosDTO = new ArrayList<>();
+		
+		
+		for(Servicio servicio :servicios){
+			ServicioDTO servicioDTO = new ServicioDTO();
+			modelMapper.map(servicio, servicioDTO);
+			serviciosDTO.add(servicioDTO);
+		}
+		return serviciosDTO;
 	}
 	
 	public List<Servicio> obtenerServicioPorPeriodo(String periodo) {

@@ -1,8 +1,14 @@
 package com.trudmin.api.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+// import java.util.logging.Logger;
 
 import com.trudmin.api.dto.ServicioDTO;
 import com.trudmin.api.model.Servicio;
@@ -21,14 +28,36 @@ import com.trudmin.api.service.ServicioService;
 @RequestMapping("servicio")
 public class ServicioCompradorController {
 
+	// private static final Logger LOG = Logger.getLogger(ServicioService.class.getName());
+
 	@Autowired
 	ServicioService servicioService;
 
 	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/obtenerServicios", method = RequestMethod.GET)
-	List<Servicio> obtenerServicios() {
-		List<Servicio> servicio = servicioService.obtenerServicios();
-		return servicio;
+	ResponseEntity<?> obtenerServicios() {
+		List<ServicioDTO> servicio = new ArrayList<>();
+		Map<String, Object> response = new HashMap<>(); 
+		try {
+			servicio = servicioService.obtenerServicios();
+		} catch (DataAccessException e) {
+            response.put("message", "Error al obtener la lista de productividad ");
+            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            response.put("status", 404);
+            e.printStackTrace();
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            response.put("message", "Error en el servidor, contactar al administrador ");
+            response.put("error", e.getMessage());
+            response.put("ststus", 404);
+            e.printStackTrace();
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+        }
+        response.put("data", servicio);
+        response.put("message", "Se obtovo correctamente la lista de productividad");
+        response.put("status", 200);
+		
+		return new ResponseEntity< Map<String, Object>>(response, HttpStatus.OK);
 	}
 
 	@Secured("ROLE_ADMIN")

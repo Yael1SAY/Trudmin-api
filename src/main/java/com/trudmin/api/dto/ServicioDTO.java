@@ -25,5 +25,6 @@ public class ServicioDTO {
 	private int totalOC;
 	private int totalSolPed;
 	private int empleadoId;
+	private EmpleadoResum empleado;
 
 }
