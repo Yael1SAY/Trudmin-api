@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 // import java.util.logging.Logger;
 
+import com.trudmin.api.dto.ServicioCreateDTO;
 import com.trudmin.api.dto.ServicioDTO;
 import com.trudmin.api.model.Servicio;
 import com.trudmin.api.service.ServicioService;
@@ -76,9 +77,29 @@ public class ServicioCompradorController {
 
 	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/crearServicio", method = RequestMethod.POST)
-	Servicio crearServicioComprador(@RequestBody ServicioDTO servicio) {
-		Servicio servicioComp = servicioService.crearServicioComprador(servicio);
-		return servicioComp;
+	ResponseEntity<?> crearServicioComprador(@RequestBody ServicioCreateDTO servicio) {
+		ServicioCreateDTO servicioComp = new ServicioCreateDTO();
+		Map<String, Object> response = new HashMap<>(); 
+		try {
+			servicioComp = servicioService.crearServicioComprador(servicio);
+		} catch (DataAccessException e) {
+            response.put("message", "Error al crear nueva productividad");
+            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            response.put("status", 404);
+            e.printStackTrace();
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            response.put("message", "Error en el servidor, contactar al administrador ");
+            response.put("error", e.getMessage());
+            response.put("ststus", 404);
+            e.printStackTrace();
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+        }
+		response.put("data", servicioComp);
+        response.put("message", "Se creo correctamente nueva productividad");
+        response.put("status", 200);
+		
+		return new ResponseEntity< Map<String, Object>>(response, HttpStatus.OK);
 	}
 
 	@Secured("ROLE_ADMIN")
