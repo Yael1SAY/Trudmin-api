@@ -2,6 +2,7 @@ package com.trudmin.api.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +53,7 @@ public class ServicioService {
 		Empleado empleado = empleadoDao.obtenerEmpleadoPorId(servicioDTO.getEmpleadoId());
 		modelMapper.map(servicioDTO, servicio);
 		servicio.setEmpleado(empleado);
+		servicio.setIdServicio(UUID.randomUUID().hashCode());
 
 		LOG.info("Servicio convertido a model: " + servicio.toString());
 
