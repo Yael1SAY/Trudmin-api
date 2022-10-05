@@ -52,4 +52,11 @@ public class CatalogosController {
 		return clavesEmpleado;
 	}
 
+
+	@RequestMapping(value = "/pruebaMaven", method = RequestMethod.GET)
+	String pruebaMaven() {
+		// List<CatalogClaveEmpleadoDTO> clavesEmpleado = catalogoService.obtenerClavesEmpleados();
+		return "Hola maven";
+	}
+
 }

@@ -20,7 +20,7 @@ public class ServicioDaoImpl implements IServicioDao{
     
     @Override
 	public List<Servicio> obtenerServicios() {
-		final String LISTAR_SERVICIOS = "Select s From Servicio s ";
+		final String LISTAR_SERVICIOS = "Select s From Servicio s order by periodo desc";
         return entityManager.createQuery(LISTAR_SERVICIOS, Servicio.class).getResultList();
 	}
 
