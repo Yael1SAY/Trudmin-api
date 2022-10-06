@@ -7,10 +7,13 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +38,13 @@ public class ServicioCompradorController {
 	ServicioService servicioService;
 
 	@Secured("ROLE_ADMIN")
+    @GetMapping("/obtenerServicios/page/{page}/{size}")
+    Page<ServicioDTO> obtenerUsuariosPage(@PathVariable Integer page, @PathVariable Integer size) {
+        Page<ServicioDTO> servicio = servicioService.obtenerServiciosPage(PageRequest.of(page, size));
+        return servicio;
+    }
+
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/obtenerServicios", method = RequestMethod.GET)
 	ResponseEntity<?> obtenerServicios() {
 		List<ServicioDTO> servicio = new ArrayList<>();
@@ -43,7 +53,7 @@ public class ServicioCompradorController {
 			servicio = servicioService.obtenerServicios();
 		} catch (DataAccessException e) {
             response.put("message", "Error al obtener la lista de productividad ");
-            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            response.put("error", e.getMostSpecificCause().getMessage());
             response.put("status", 404);
             e.printStackTrace();
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
@@ -84,7 +94,7 @@ public class ServicioCompradorController {
 			servicioComp = servicioService.crearServicioComprador(servicio);
 		} catch (DataAccessException e) {
             response.put("message", "Error al crear nueva productividad");
-            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            response.put("error", e.getMostSpecificCause().getMessage());
             response.put("status", 404);
             e.printStackTrace();
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);

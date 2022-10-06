@@ -42,14 +42,13 @@ public class UsuarioController {
     // }
 
     @Secured("ROLE_ADMIN")
-    @RequestMapping(value = "/obtenerUsuarios", method = RequestMethod.GET)
+    @GetMapping("/obtenerUsuarios")
     List<Usuario> obtenerUsuarios() {
         List<Usuario> usuarios = usuarioService.obtenerUsuarios();
         return usuarios;
     }
 
     @Secured("ROLE_ADMIN")
-    // @RequestMapping(value = "/obtenerUsuarios/page/", method = RequestMethod.GET)
     @GetMapping("/obtenerUsuarios/page/{page}/{size}")
     Page<UsuarioDTO> obtenerUsuariosPage(@PathVariable Integer page, @PathVariable Integer size) {
         Page<UsuarioDTO> usuarios = usuarioService.obtenerUsuariosPage(PageRequest.of(page, size));
@@ -74,14 +73,14 @@ public class UsuarioController {
             usuarioDto = usuarioService.registrarUsuario(usuario);
         } catch (DataAccessException e) {
             response.put("message", "Error al realizar el alta del usuario " + usuario.getNombre());
-            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            response.put("error", e.getMostSpecificCause().getMessage());
             response.put("status", 404);
             e.printStackTrace();
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             response.put("message", "Error en el servidor, contactar al administrador ");
             response.put("error", e.getMessage());
-            response.put("ststus", 404);
+            response.put("status", 404);
             e.printStackTrace();
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
         }

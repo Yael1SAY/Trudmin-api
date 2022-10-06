@@ -33,6 +33,10 @@ public class UsuarioService {
 
     ModelMapper modelMapper = new ModelMapper();
 
+    public <D, T> Page<D> mapEntityPageIntoDtoPage(Page<T> entities, Class<D> dtoClass) {
+        return entities.map(objectEntity -> modelMapper.map(objectEntity, dtoClass));
+    } 
+
     public List<Usuario> obtenerUsuarios() {
         List<Usuario> list = usuarioDao.obtenerUsuario();
         return list;
@@ -44,10 +48,6 @@ public class UsuarioService {
         return usuarioDto;
 
     }
-
-    public <D, T> Page<D> mapEntityPageIntoDtoPage(Page<T> entities, Class<D> dtoClass) {
-        return entities.map(objectEntity -> modelMapper.map(objectEntity, dtoClass));
-    } 
 
     public Usuario obtenerUsuarioId(long id) {
         Usuario comprador = usuarioDao.obtenerUsuarioId(id);

@@ -6,10 +6,13 @@ import java.util.UUID;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.trudmin.api.dao.IEmpleadoDao;
 import com.trudmin.api.dao.IServicioDao;
+import com.trudmin.api.dao.IServicioDaoPage;
 import com.trudmin.api.dto.ServicioCreateDTO;
 import com.trudmin.api.dto.ServicioDTO;
 import com.trudmin.api.model.Empleado;
@@ -27,7 +30,20 @@ public class ServicioService {
 	IServicioDao servicioDao;
 
 	@Autowired
+	IServicioDaoPage servicioDaoPage;
+
+	@Autowired
 	IEmpleadoDao empleadoDao;
+
+	public <D, T> Page<D> mapEntityPageIntoDtoPage(Page<T> entities, Class<D> dtoClass) {
+        return entities.map(objectEntity -> modelMapper.map(objectEntity, dtoClass));
+    } 
+
+	public Page<ServicioDTO> obtenerServiciosPage(Pageable pageable) {
+		Page<Servicio> entity = servicioDaoPage.findAll(pageable);
+        Page<ServicioDTO> usuarioDto = mapEntityPageIntoDtoPage(entity, ServicioDTO.class);
+        return usuarioDto;
+	}
 
 	public List<ServicioDTO> obtenerServicios() {
 		List<Servicio> servicios = servicioDao.obtenerServicios();
