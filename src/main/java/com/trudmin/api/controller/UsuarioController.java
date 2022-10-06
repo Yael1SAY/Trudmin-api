@@ -7,10 +7,13 @@ import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,6 +45,14 @@ public class UsuarioController {
     @RequestMapping(value = "/obtenerUsuarios", method = RequestMethod.GET)
     List<Usuario> obtenerUsuarios() {
         List<Usuario> usuarios = usuarioService.obtenerUsuarios();
+        return usuarios;
+    }
+
+    @Secured("ROLE_ADMIN")
+    // @RequestMapping(value = "/obtenerUsuarios/page/", method = RequestMethod.GET)
+    @GetMapping("/obtenerUsuarios/page/{page}/{size}")
+    Page<UsuarioDTO> obtenerUsuariosPage(@PathVariable Integer page, @PathVariable Integer size) {
+        Page<UsuarioDTO> usuarios = usuarioService.obtenerUsuariosPage(PageRequest.of(page, size));
         return usuarios;
     }
 
