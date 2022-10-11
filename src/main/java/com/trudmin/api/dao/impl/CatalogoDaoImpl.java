@@ -13,6 +13,7 @@ import com.trudmin.api.model.Area;
 import com.trudmin.api.model.Empleado;
 import com.trudmin.api.model.Puesto;
 import com.trudmin.api.model.SubArea;
+import com.trudmin.api.model.Usuario;
 
 @Transactional
 @Repository
@@ -47,6 +48,13 @@ public class CatalogoDaoImpl implements ICatalogoDao {
 		final String LISTAR_EMPLEADOS = "Select e From Empleado e";
 		List<Empleado> empleados = entityManager.createQuery(LISTAR_EMPLEADOS, Empleado.class).getResultList();
 		return empleados;
+	}
+
+	@Override
+	public List<Usuario> obtenerUsuarios() {
+		final String LISTAR_USUARIOS = "Select u FROM Usuario u";
+		List<Usuario> usuario = entityManager.createQuery(LISTAR_USUARIOS, Usuario.class).getResultList();
+		return usuario;
 	}
 
 }

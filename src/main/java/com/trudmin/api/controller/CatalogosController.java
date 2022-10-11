@@ -5,12 +5,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.trudmin.api.dto.AreaDto;
 import com.trudmin.api.dto.CatalogClaveEmpleadoDTO;
+import com.trudmin.api.dto.CatalogUsuariosDto;
 import com.trudmin.api.dto.PuestoDTO;
 import com.trudmin.api.dto.SubAreaDto;
 import com.trudmin.api.service.CatalogoService;
@@ -57,6 +59,12 @@ public class CatalogosController {
 	String pruebaMaven() {
 		// List<CatalogClaveEmpleadoDTO> clavesEmpleado = catalogoService.obtenerClavesEmpleados();
 		return "Hola maven";
+	}
+
+	@GetMapping("/catalogoUsuarios")
+	List<CatalogUsuariosDto>obtenerCatalogUsuario() {
+		List<CatalogUsuariosDto> catalogoUsuarios = catalogoService.obtenerUsuarios();
+		return catalogoUsuarios;
 	}
 
 }

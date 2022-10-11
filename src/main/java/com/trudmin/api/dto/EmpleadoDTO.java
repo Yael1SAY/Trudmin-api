@@ -20,5 +20,7 @@ public class EmpleadoDTO {
 	private Usuario usuario;
 	private SubArea subArea;	
 	private Puesto puesto;
+	private boolean estatus;
+	private String telefono;
 
 }

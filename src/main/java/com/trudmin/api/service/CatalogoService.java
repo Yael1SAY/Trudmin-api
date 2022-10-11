@@ -10,12 +10,14 @@ import org.springframework.stereotype.Service;
 import com.trudmin.api.dao.ICatalogoDao;
 import com.trudmin.api.dto.AreaDto;
 import com.trudmin.api.dto.CatalogClaveEmpleadoDTO;
+import com.trudmin.api.dto.CatalogUsuariosDto;
 import com.trudmin.api.dto.PuestoDTO;
 import com.trudmin.api.dto.SubAreaDto;
 import com.trudmin.api.model.Area;
 import com.trudmin.api.model.Empleado;
 import com.trudmin.api.model.Puesto;
 import com.trudmin.api.model.SubArea;
+import com.trudmin.api.model.Usuario;
 
 @Service
 public class CatalogoService {
@@ -67,5 +69,17 @@ public class CatalogoService {
 			listCatalogClv.add(catalogClave);
 		}
 		return listCatalogClv;
+	}
+
+	public List<CatalogUsuariosDto> obtenerUsuarios() {
+		List<CatalogUsuariosDto> listUsuariosDto = new ArrayList<CatalogUsuariosDto>();
+		List<Usuario> usuarios = catalogosDao.obtenerUsuarios();
+		for (Usuario usuario : usuarios) {
+			CatalogUsuariosDto usuarioNew = new CatalogUsuariosDto();
+			modelMapper.map(usuario, usuarioNew);
+			listUsuariosDto.add(usuarioNew);
+		}
+		return listUsuariosDto;
+		
 	}
 }

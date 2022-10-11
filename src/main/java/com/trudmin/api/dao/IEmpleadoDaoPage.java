@@ -4,10 +4,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.trudmin.api.model.Servicio;
+import com.trudmin.api.model.Empleado;
 
-public interface IServicioDaoPage extends JpaRepository<Servicio, Long> {
+public interface IEmpleadoDaoPage extends JpaRepository<Empleado, Long> {
 
-    public Page<Servicio> findAll(Pageable pageable);
+    public Page<Empleado> findAll(Pageable pageable);
 
 }

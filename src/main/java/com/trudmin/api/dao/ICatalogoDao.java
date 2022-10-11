@@ -6,6 +6,7 @@ import com.trudmin.api.model.Area;
 import com.trudmin.api.model.Empleado;
 import com.trudmin.api.model.Puesto;
 import com.trudmin.api.model.SubArea;
+import com.trudmin.api.model.Usuario;
 
 public interface ICatalogoDao {
 
@@ -16,5 +17,7 @@ public interface ICatalogoDao {
 	List<Puesto> obtenerPuestos();
 	
 	List<Empleado> obtenerEmpleados();
+
+	List<Usuario> obtenerUsuarios();
 
 }
