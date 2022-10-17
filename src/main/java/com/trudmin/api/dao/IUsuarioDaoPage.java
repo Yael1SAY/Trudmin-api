@@ -10,4 +10,6 @@ public interface IUsuarioDaoPage extends JpaRepository<Usuario, Long> {
 
     public Page<Usuario> findAll(Pageable pageable);
 
+    public Usuario findByNombreUsuarioOrEmail(String nombreUsuario, String email);
+
 }

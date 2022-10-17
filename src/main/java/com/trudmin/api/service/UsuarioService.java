@@ -14,6 +14,7 @@ import com.trudmin.api.model.Usuario;
 
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -44,6 +45,9 @@ public class UsuarioService {
 
     public Page<UsuarioDTO> obtenerUsuariosPage(Pageable pageable) {
         Page<Usuario> entity = usuarioDaoPage.findAll(pageable);
+        if (entity.isEmpty()) {
+            throw new NoSuchElementException("No hay datos");
+        }
         Page<UsuarioDTO> usuarioDto = mapEntityPageIntoDtoPage(entity, UsuarioDTO.class);
         return usuarioDto;
 
@@ -61,6 +65,10 @@ public class UsuarioService {
         usuario.setEstatus(true);
         usuario.setFechaCreacion(new Date());
 
+        Usuario usuarioExist = usuarioDaoPage.findByNombreUsuarioOrEmail(usuario.getNombreUsuario(), usuario.getEmail());
+        if (usuarioExist != null){
+            throw new NoSuchElementException("El nombre de usuario y/o e-mail ya se encuentra registrado");
+        }
         Usuario usuarioNew = usuarioDao.registrarUsuario(usuario);
         UsuarioDTO usuarioDto = new UsuarioDTO();
         modelMapper.map(usuarioNew, usuarioDto);
