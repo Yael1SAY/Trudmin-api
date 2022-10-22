@@ -15,6 +15,7 @@ import com.trudmin.api.dao.IServicioDao;
 import com.trudmin.api.dao.IServicioDaoPage;
 import com.trudmin.api.dto.ServicioCreateDTO;
 import com.trudmin.api.dto.ServicioDTO;
+import com.trudmin.api.dto.ServicioProductividadDTO;
 import com.trudmin.api.model.Empleado;
 import com.trudmin.api.model.Servicio;
 import org.modelmapper.ModelMapper;
@@ -131,6 +132,18 @@ public class ServicioService {
 		ServicioDTO servicioDto = new ServicioDTO();
 		modelMapper.map(servicio, servicioDto);
 		return servicioDto;
+	}
+
+	public List<ServicioProductividadDTO> obtenerServicioProductividad(long empleadoId, int anio ) {
+		List<ServicioProductividadDTO> servicioProductividad = new ArrayList<>();
+		Empleado empleado = empleadoDao.obtenerEmpleadoPorId(empleadoId);
+		List<Servicio> servicios = servicioDaoPage.findByEmpleadoAndAnio(empleado, anio);
+		for (Servicio servicio : servicios) {
+			ServicioProductividadDTO servicioDto = new ServicioProductividadDTO();
+			modelMapper.map(servicio, servicioDto);
+			servicioProductividad.add(servicioDto);
+		}
+		return servicioProductividad;
 	}
 
 }

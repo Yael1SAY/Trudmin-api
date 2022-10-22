@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.trudmin.api.dto.ServicioCreateDTO;
 import com.trudmin.api.dto.ServicioDTO;
+import com.trudmin.api.dto.ServicioProductividadDTO;
+import com.trudmin.api.exceptions.GenericResponse;
 import com.trudmin.api.model.Servicio;
 import com.trudmin.api.service.ServicioService;
 
@@ -42,6 +44,17 @@ public class ServicioCompradorController {
     Page<ServicioDTO> obtenerUsuariosPage(@PathVariable Integer page, @PathVariable Integer size) {
         Page<ServicioDTO> servicio = servicioService.obtenerServiciosPage(PageRequest.of(page, size));
         return servicio;
+    }
+
+	@Secured("ROLE_ADMIN")
+    @GetMapping("/obtenerServicios_productividad/{empleadoId}/{anio}")
+    ResponseEntity<?> obtenerServicioProductividad(@PathVariable Integer empleadoId, @PathVariable Integer anio) {
+		GenericResponse<List<ServicioProductividadDTO>> response = new GenericResponse<List<ServicioProductividadDTO>>();
+        List<ServicioProductividadDTO> servicio = servicioService.obtenerServicioProductividad(empleadoId, anio);
+		response.setData(servicio);
+		response.setMessage("Se obtuvieron correctamnete los datos");
+		response.setStatus(200);
+        return new ResponseEntity<GenericResponse<List<ServicioProductividadDTO>>>(response, HttpStatus.OK);
     }
 
 	@Secured("ROLE_ADMIN")
