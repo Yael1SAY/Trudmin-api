@@ -137,7 +137,7 @@ public class ServicioService {
 	public List<ServicioProductividadDTO> obtenerServicioProductividad(long empleadoId, int anio ) {
 		List<ServicioProductividadDTO> servicioProductividad = new ArrayList<>();
 		Empleado empleado = empleadoDao.obtenerEmpleadoPorId(empleadoId);
-		List<Servicio> servicios = servicioDaoPage.findByEmpleadoAndAnio(empleado, anio);
+		List<Servicio> servicios = servicioDaoPage.findByEmpleadoAndAnioOrderByPeriodo(empleado, anio);
 		for (Servicio servicio : servicios) {
 			ServicioProductividadDTO servicioDto = new ServicioProductividadDTO();
 			modelMapper.map(servicio, servicioDto);

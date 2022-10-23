@@ -47,7 +47,7 @@ public class ServicioCompradorController {
     }
 
 	@Secured("ROLE_ADMIN")
-    @GetMapping("/obtenerServicios_productividad/{empleadoId}/{anio}")
+    @GetMapping("/obtenerServiciosProductividad/{empleadoId}/{anio}")
     ResponseEntity<?> obtenerServicioProductividad(@PathVariable Integer empleadoId, @PathVariable Integer anio) {
 		GenericResponse<List<ServicioProductividadDTO>> response = new GenericResponse<List<ServicioProductividadDTO>>();
         List<ServicioProductividadDTO> servicio = servicioService.obtenerServicioProductividad(empleadoId, anio);

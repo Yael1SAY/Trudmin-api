@@ -13,6 +13,6 @@ public interface IServicioDaoPage extends JpaRepository<Servicio, Long> {
 
     public Page<Servicio> findAll(Pageable pageable);
 
-    public List<Servicio> findByEmpleadoAndAnio(Empleado empleado, int anio);
+    public List<Servicio> findByEmpleadoAndAnioOrderByPeriodo(Empleado empleado, int anio);
 
 }
