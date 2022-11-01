@@ -58,9 +58,10 @@ public class Empleado implements Serializable {
 	@JoinColumn(name = "puesto_id")
     @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Puesto puesto;
-	
-	//@OneToMany(mappedBy = "empleado", cascade = CascadeType.ALL)
-	//private Servicio servicio;
+
+	@JoinColumn(name = "jefe_id", referencedColumnName = "empleado_id")
+	@ManyToOne(optional = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private Empleado jefeId;	
 
 	private static final long serialVersionUID = 1L;
 
