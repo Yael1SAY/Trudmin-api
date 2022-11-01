@@ -14,6 +14,7 @@ import com.trudmin.api.dao.IEmpleadoDaoPage;
 import com.trudmin.api.dto.AltaEmpleadoDTO;
 import com.trudmin.api.dto.EmpleadoDTO;
 import com.trudmin.api.model.Empleado;
+import com.trudmin.api.model.Usuario;
 
 @Service
 public class EmpleadoService {
@@ -78,6 +79,14 @@ public class EmpleadoService {
 		Empleado empleadoNew = empleadoDaoPage.save(empleadoEntity);
 		EmpleadoDTO empleadoDTO = new EmpleadoDTO();
 		modelMapper.map(empleadoNew, empleadoDTO);
+		return empleadoDTO;
+	}
+
+	public EmpleadoDTO obtenerEmpleadoPorUsuarioId(long usuarioId) {
+		Usuario usuario = usuarioService.obtenerUsuarioPorId(usuarioId);
+		Empleado empleadoEntity = empleadoDaoPage.findByUsuario(usuario);
+		EmpleadoDTO empleadoDTO = new EmpleadoDTO();
+		modelMapper.map(empleadoEntity, empleadoDTO);
 		return empleadoDTO;
 	}
 

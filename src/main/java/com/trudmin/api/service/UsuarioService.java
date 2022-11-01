@@ -58,6 +58,11 @@ public class UsuarioService {
         return comprador;
     }
 
+    public Usuario obtenerUsuarioPorId(long id){
+        Usuario usuario = usuarioDaoPage.findById(id).get();
+        return usuario;
+    }
+
     public UsuarioDTO registrarUsuario(Usuario usuario) {
 
         usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));

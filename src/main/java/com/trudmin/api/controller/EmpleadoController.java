@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.trudmin.api.dto.AltaEmpleadoDTO;
 import com.trudmin.api.dto.EmpleadoDTO;
+import com.trudmin.api.exceptions.GenericResponse;
 import com.trudmin.api.model.Empleado;
 import com.trudmin.api.service.EmpleadoService;
 
@@ -34,16 +35,27 @@ public class EmpleadoController {
 	
 	@Secured("ROLE_ADMIN")
     @RequestMapping(value = "/obtenerEmpleados", method = RequestMethod.GET)
-    List<Empleado> obtenerUsuarios(){
+    List<Empleado> obtenerEmpleados(){
         List<Empleado> empleado = empleadoService.obtenerEmpleados();
         return empleado;
     }
 
     @Secured("ROLE_ADMIN")
     @GetMapping("/obtenerEmpleados/page/{page}/{size}")
-    Page<EmpleadoDTO> obtenerUsuariosPage(@PathVariable Integer page, @PathVariable Integer size){
+    Page<EmpleadoDTO> obtenerEmpleadosPage(@PathVariable Integer page, @PathVariable Integer size){
         Page<EmpleadoDTO> empleado = empleadoService.obtenerEmpleadosPage(PageRequest.of(page, size));
         return empleado;
+    }
+
+    @Secured("ROLE_ADMIN")
+    @GetMapping("/obtenerEmpleadoPorUsuarioId/{usuarioId}")
+    ResponseEntity<?> obtenerEmpleadoPorUsuarioId(@PathVariable long usuarioId) {
+        GenericResponse<EmpleadoDTO> response = new GenericResponse<EmpleadoDTO>();
+        EmpleadoDTO empleadoDTO = empleadoService.obtenerEmpleadoPorUsuarioId(usuarioId);
+        response.setData(empleadoDTO);
+		response.setMessage("Se obtuvieron correctamnete los datos");
+		response.setStatus(200);
+        return new ResponseEntity<GenericResponse<EmpleadoDTO>>(response, HttpStatus.OK);
     }
 
     @Secured("ROLE_ADMIN")
