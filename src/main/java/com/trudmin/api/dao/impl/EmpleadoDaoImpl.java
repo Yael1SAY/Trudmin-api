@@ -20,7 +20,8 @@ public class EmpleadoDaoImpl implements IEmpleadoDao{
 	
 	@Override
 	public Empleado obtenerEmpleadoPorId(long empleadoId) {
-		Empleado empleado = entityManager.find(Empleado.class, empleadoId);
+		Empleado empleado;
+		empleado = entityManager.find(Empleado.class, empleadoId);
 		return empleado;
 	}
 

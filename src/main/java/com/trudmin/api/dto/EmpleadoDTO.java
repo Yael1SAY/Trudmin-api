@@ -22,5 +22,6 @@ public class EmpleadoDTO {
 	private Puesto puesto;
 	private boolean estatus;
 	private String telefono;
+	private JefeDTO jefe;
 
 }

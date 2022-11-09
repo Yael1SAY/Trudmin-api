@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -59,9 +61,10 @@ public class Empleado implements Serializable {
     @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Puesto puesto;
 
-	@JoinColumn(name = "jefe_id", referencedColumnName = "empleado_id")
-	@ManyToOne(optional = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private Empleado jefeId;	
+	@JoinColumn(name="jefe_id")
+	@ManyToOne(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+	@JsonBackReference
+	private Jefe jefe;
 
 	private static final long serialVersionUID = 1L;
 

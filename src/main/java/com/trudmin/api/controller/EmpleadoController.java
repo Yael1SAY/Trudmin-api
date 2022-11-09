@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.trudmin.api.dto.AltaEmpleadoDTO;
@@ -34,28 +33,38 @@ public class EmpleadoController {
 	EmpleadoService empleadoService;
 	
 	@Secured("ROLE_ADMIN")
-    @RequestMapping(value = "/obtenerEmpleados", method = RequestMethod.GET)
+    @GetMapping(value = "/obtenerEmpleados")
     List<Empleado> obtenerEmpleados(){
-        List<Empleado> empleado = empleadoService.obtenerEmpleados();
+        List<Empleado> empleado;
+        empleado = empleadoService.obtenerEmpleados();
         return empleado;
     }
 
     @Secured("ROLE_ADMIN")
     @GetMapping("/obtenerEmpleados/page/{page}/{size}")
     Page<EmpleadoDTO> obtenerEmpleadosPage(@PathVariable Integer page, @PathVariable Integer size){
-        Page<EmpleadoDTO> empleado = empleadoService.obtenerEmpleadosPage(PageRequest.of(page, size));
+        Page<EmpleadoDTO> empleado;
+        empleado = empleadoService.obtenerEmpleadosPage(PageRequest.of(page, size));
         return empleado;
+    }
+
+    @Secured("ROLE_ADMIN")
+    @GetMapping("/obtenerEmpleadoPorId/{empleadoId}")
+    EmpleadoDTO obtenerEmpleadoPorId(@PathVariable Integer empleadoId){
+        EmpleadoDTO empleadoDTO;
+        empleadoDTO = empleadoService.obtenerEmpleadoPorId(empleadoId);
+        return empleadoDTO;
     }
 
     @Secured("ROLE_ADMIN")
     @GetMapping("/obtenerEmpleadoPorUsuarioId/{usuarioId}")
     ResponseEntity<?> obtenerEmpleadoPorUsuarioId(@PathVariable long usuarioId) {
-        GenericResponse<EmpleadoDTO> response = new GenericResponse<EmpleadoDTO>();
+        GenericResponse<EmpleadoDTO> response = new GenericResponse<>();
         EmpleadoDTO empleadoDTO = empleadoService.obtenerEmpleadoPorUsuarioId(usuarioId);
         response.setData(empleadoDTO);
 		response.setMessage("Se obtuvieron correctamnete los datos");
 		response.setStatus(200);
-        return new ResponseEntity<GenericResponse<EmpleadoDTO>>(response, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @Secured("ROLE_ADMIN")
@@ -66,7 +75,7 @@ public class EmpleadoController {
         response.put("data", empleadoNew);
         response.put("message", "Se dio de alta correctamente el empleado");
         response.put("status", 200);
-        return new ResponseEntity< Map<String, Object>>(response, HttpStatus.OK); 
+        return new ResponseEntity<>(response, HttpStatus.OK); 
     } 
 
 }

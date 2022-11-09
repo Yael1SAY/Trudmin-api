@@ -1,6 +1,8 @@
 package com.trudmin.api.service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +61,8 @@ public class EmpleadoService {
 	 */
 	public Page<EmpleadoDTO> obtenerEmpleadosPage(Pageable pageable) {
 		Page<Empleado> empleadoEntity = empleadoDaoPage.findAll(pageable);
-        Page<EmpleadoDTO> empleadoDTO = mapEntityPageIntoDtoPage(empleadoEntity, EmpleadoDTO.class);
+        Page<EmpleadoDTO> empleadoDTO = null;
+		empleadoDTO = mapEntityPageIntoDtoPage(empleadoEntity, EmpleadoDTO.class);
         return empleadoDTO;
 	}
 
@@ -87,6 +90,18 @@ public class EmpleadoService {
 		Empleado empleadoEntity = empleadoDaoPage.findByUsuario(usuario);
 		EmpleadoDTO empleadoDTO = new EmpleadoDTO();
 		modelMapper.map(empleadoEntity, empleadoDTO);
+		return empleadoDTO;
+	}
+
+	public EmpleadoDTO obtenerEmpleadoPorId(long empleadoId){
+		EmpleadoDTO empleadoDTO = new EmpleadoDTO();
+		Optional<Empleado> empleadoOp = empleadoDaoPage.findById(empleadoId);
+		if (empleadoOp.isPresent()) {
+			modelMapper.map(empleadoOp.get(), empleadoDTO);
+		}
+		else {
+			throw new NoSuchElementException("No existe el empleado con id " + empleadoId);
+		}
 		return empleadoDTO;
 	}
 

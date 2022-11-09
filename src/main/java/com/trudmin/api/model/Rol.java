@@ -32,10 +32,6 @@ public class Rol implements Serializable {
     @Column(unique = true, length = 20)
     private String nombreRol;
     
-    //@JsonIgnore
-    //@ManyToMany(mappedBy = "roles")
-    //private List<Usuario> usuarios;
-    
     private static final long serialVersionUID = 1L;
     
 }
