@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
@@ -12,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +30,7 @@ import com.trudmin.api.dto.ServicioCreateDTO;
 import com.trudmin.api.dto.ServicioDTO;
 import com.trudmin.api.dto.ServicioProductividadDTO;
 import com.trudmin.api.exceptions.GenericResponse;
+import com.trudmin.api.exceptions.InvalidDataException;
 import com.trudmin.api.model.Servicio;
 import com.trudmin.api.service.ServicioService;
 
@@ -35,95 +39,97 @@ import com.trudmin.api.service.ServicioService;
 @RequestMapping("servicio")
 public class ServicioCompradorController {
 
-	// private static final Logger LOG = Logger.getLogger(ServicioService.class.getName());
+	// private static final Logger LOG =
+	// Logger.getLogger(ServicioService.class.getName());
 
 	@Autowired
 	ServicioService servicioService;
 
 	@Secured("ROLE_ADMIN")
-    @GetMapping("/obtenerServicios/page/{page}/{size}")
-    Page<ServicioDTO> obtenerUsuariosPage(@PathVariable Integer page, @PathVariable Integer size) {
-        Page<ServicioDTO> servicio = servicioService.obtenerServiciosPage(PageRequest.of(page, size));
-        return servicio;
-    }
-
-	@Secured("ROLE_ADMIN")
-    @GetMapping("/obtenerServiciosProductividad/{empleadoId}/{anio}")
-    ResponseEntity<?> obtenerServicioProductividad(@PathVariable Integer empleadoId, @PathVariable Integer anio) {
-		GenericResponse<List<ServicioProductividadDTO>> response = new GenericResponse<List<ServicioProductividadDTO>>();
-        List<ServicioProductividadDTO> servicio = servicioService.obtenerServicioProductividad(empleadoId, anio);
-		response.setData(servicio);
-		response.setMessage("Se obtuvieron correctamnete los datos");
-		response.setStatus(200);
-        return new ResponseEntity<GenericResponse<List<ServicioProductividadDTO>>>(response, HttpStatus.OK);
-    }
-
-	@Secured("ROLE_ADMIN")
-	@RequestMapping(value = "/obtenerServicios", method = RequestMethod.GET)
-	ResponseEntity<?> obtenerServicios() {
-		List<ServicioDTO> servicio = new ArrayList<>();
-		Map<String, Object> response = new HashMap<>(); 
-		try {
-			servicio = servicioService.obtenerServicios();
-		} catch (DataAccessException e) {
-            response.put("message", "Error al obtener la lista de productividad ");
-            response.put("error", e.getMostSpecificCause().getMessage());
-            response.put("status", 404);
-            e.printStackTrace();
-            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
-            response.put("message", "Error en el servidor, contactar al administrador ");
-            response.put("error", e.getMessage());
-            response.put("ststus", 404);
-            e.printStackTrace();
-            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
-        }
-        response.put("data", servicio);
-        response.put("message", "Se obtuvo correctamente la lista de productividad");
-        response.put("status", 200);
-		
-		return new ResponseEntity< Map<String, Object>>(response, HttpStatus.OK);
-	}
-
-	@Secured("ROLE_ADMIN")
-	@RequestMapping(value = "/obtenerServiciosPorCompradorAnio", method = RequestMethod.GET)
-	List<ServicioDTO> obtenerServiciosPorCompradorAnio(@RequestParam long empleadoId, @RequestParam int anio) {
-		List<ServicioDTO> servicio = servicioService.obtenerServiciosCompradorPeriodo(empleadoId, anio);
+	@GetMapping("/obtenerServicios/page/{page}/{size}")
+	Page<ServicioDTO> obtenerUsuariosPage(@PathVariable Integer page, @PathVariable Integer size) {
+		Page<ServicioDTO> servicio = servicioService.obtenerServiciosPage(PageRequest.of(page, size));
 		return servicio;
 	}
 
 	@Secured("ROLE_ADMIN")
-	@RequestMapping(value = "/serviciosPeriodo/{periodo}", method = RequestMethod.GET)
+	@GetMapping("/obtenerServiciosProductividad/{empleadoId}/{anio}")
+	ResponseEntity<?> obtenerServicioProductividad(@PathVariable Integer empleadoId, @PathVariable Integer anio) {
+		GenericResponse<List<ServicioProductividadDTO>> response = new GenericResponse<List<ServicioProductividadDTO>>();
+		List<ServicioProductividadDTO> servicio = servicioService.obtenerServicioProductividad(empleadoId, anio);
+		response.setData(servicio);
+		response.setMessage("Se obtuvieron correctamnete los datos");
+		response.setStatus(200);
+		return new ResponseEntity<GenericResponse<List<ServicioProductividadDTO>>>(response, HttpStatus.OK);
+	}
+
+	@Secured("ROLE_ADMIN")
+	@GetMapping(value = "/obtenerServicios")
+	ResponseEntity<?> obtenerServicios() {
+		List<ServicioDTO> servicio = new ArrayList<>();
+		Map<String, Object> response = new HashMap<>();
+		try {
+			servicio = servicioService.obtenerServicios();
+		} catch (DataAccessException e) {
+			response.put("message", "Error al obtener la lista de productividad ");
+			response.put("error", e.getMostSpecificCause().getMessage());
+			response.put("status", 404);
+			e.printStackTrace();
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		} catch (Exception e) {
+			response.put("message", "Error en el servidor, contactar al administrador ");
+			response.put("error", e.getMessage());
+			response.put("ststus", 404);
+			e.printStackTrace();
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}
+		response.put("data", servicio);
+		response.put("message", "Se obtuvo correctamente la lista de productividad");
+		response.put("status", 200);
+
+		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+	}
+
+	@Secured("ROLE_ADMIN")
+	@GetMapping(value = "/obtenerServiciosPorCompradorAnio")
+	List<ServicioDTO> obtenerServiciosPorCompradorAnio(@RequestParam long empleadoId, @RequestParam int anio) {
+		List<ServicioDTO> servicio;
+		servicio = servicioService.obtenerServiciosCompradorPeriodo(empleadoId, anio);
+		return servicio;
+	}
+
+	@Secured("ROLE_ADMIN")
+	@GetMapping(value = "/obtenerServiciosPorClaveAnio")
+	List<ServicioDTO> obtenerServicioPorClaveAnio(@RequestParam String clave, @RequestParam int anio) {
+		List<ServicioDTO> servicio;
+		servicio = servicioService.obtenerServiciosClaveAnio(clave, anio);
+		return servicio;
+	}
+
+	@Secured("ROLE_ADMIN")
+	@GetMapping(value = "/serviciosPeriodo/{periodo}")
 	List<Servicio> obtenerServicioPorPeriodo(@PathVariable String periodo) {
-		List<Servicio> servicio = servicioService.obtenerServicioPorPeriodo(periodo);
+		List<Servicio> servicio;
+		servicio = servicioService.obtenerServicioPorPeriodo(periodo);
 		return servicio;
 	}
 
 	@Secured("ROLE_ADMIN")
 	@PostMapping(value = "/crearServicio")
-	ResponseEntity<?> crearServicioComprador(@RequestBody ServicioCreateDTO servicio) {
-		ServicioCreateDTO servicioComp = new ServicioCreateDTO();
-		Map<String, Object> response = new HashMap<>(); 
-		try {
-			servicioComp = servicioService.crearServicioComprador(servicio);
-		} catch (DataAccessException e) {
-            response.put("message", "Error al crear nueva productividad");
-            response.put("error", e.getMostSpecificCause().getMessage());
-            response.put("status", 404);
-            e.printStackTrace();
-            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
-            response.put("message", "Error en el servidor, contactar al administrador ");
-            response.put("error", e.getMessage());
-            response.put("ststus", 404);
-            e.printStackTrace();
-            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
-        }
-		response.put("data", servicioComp);
-        response.put("message", "Se creo correctamente nueva productividad");
-        response.put("status", 200);
-		
-		return new ResponseEntity< Map<String, Object>>(response, HttpStatus.OK);
+	ResponseEntity<?> crearServicioComprador(@Valid @RequestBody ServicioCreateDTO servicio, BindingResult result) {
+		ServicioCreateDTO servicioComp;
+		GenericResponse<ServicioCreateDTO> response = new GenericResponse<>();
+
+		if (result.hasErrors()) {
+			throw new InvalidDataException(result);
+		}
+
+		servicioComp = servicioService.crearServicioComprador(servicio);
+		response.setData(servicioComp);
+		response.setMessage("Se creo correctamente nueva productividad");
+		response.setStatus(200);
+
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 	@Secured("ROLE_ADMIN")

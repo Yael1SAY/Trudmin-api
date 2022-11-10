@@ -73,14 +73,22 @@ public class ServicioService {
 	public ServicioCreateDTO crearServicioComprador(ServicioCreateDTO servicioDTO) {
 		Servicio servicio = new Servicio();
 		Empleado empleado = empleadoDao.obtenerEmpleadoPorId(servicioDTO.getEmpleadoId());
+		if (empleado == null) {
+			throw new NoSuchElementException("No se encuentra empleado con id " + servicioDTO.getEmpleadoId());
+		}
 		modelMapper.map(servicioDTO, servicio);
 		servicio.setEmpleado(empleado);
 		servicio.setIdServicio(UUID.randomUUID().hashCode());
 
+		Servicio servicioExist;
+		servicioExist = servicioDaoPage.findByEmpleadoAndPeriodo(empleado, servicioDTO.getPeriodo());
+
+		if (servicioExist != null) {
+			throw new NoSuchElementException("Ya se encuentra un registro con el mismo periodo, favor de revisar");
+		}
+
 		Servicio servicoComp = servicioDao.crearServicioComprador(servicio);
-
 		ServicioCreateDTO servicioRespDTO = new ServicioCreateDTO();
-
 		modelMapper.map(servicoComp, servicioRespDTO);
 
 		return servicioRespDTO;
@@ -88,29 +96,14 @@ public class ServicioService {
 
 	public Servicio updateServicio(ServicioDTO servicioDto) {
 		Servicio servicio = new Servicio();
-		try {
-			Empleado empleado = empleadoDao.obtenerEmpleadoPorId(servicioDto.getEmpleadoId());
-			servicio.setIdServicio(servicioDto.getIdServicio());
-			servicio.setAhorro(servicioDto.getAhorro());
-			servicio.setAnio(servicioDto.getAnio());
-			servicio.setCapturaTiempo(servicioDto.getCapturaTiempo());
-			servicio.setCriterio(servicioDto.getCriterio());
-			servicio.setDiasOC(servicioDto.getDiasOC());
-			servicio.setDiasSP(servicioDto.getDiasSP());
-			servicio.setDiscrecional(servicioDto.getDiscrecional());
-			servicio.setEmpleado(empleado);
-			servicio.setMes(servicioDto.getMes());
-			servicio.setPeriodo(servicioDto.getPeriodo());
-			servicio.setTotal(servicioDto.getTotal());
-			servicio.setTotalOC(servicioDto.getTotalOC());
-			servicio.setTotalSolPed(servicioDto.getTotalSolPed());
-			Servicio servicoComp;
-			servicoComp = servicioDao.crearServicioComprador(servicio);
-			return servicoComp;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
+		Servicio servicoNew;
+
+		Empleado empleado = empleadoDao.obtenerEmpleadoPorId(servicioDto.getEmpleadoId());
+		modelMapper.map(servicioDto, servicio);
+		servicio.setEmpleado(empleado);
+
+		servicoNew = servicioDao.crearServicioComprador(servicio);
+		return servicoNew;
 	}
 
 	public long eliminarServicio(long idServicio) {
@@ -122,6 +115,22 @@ public class ServicioService {
 	public List<ServicioDTO> obtenerServiciosCompradorPeriodo(long empleadoId, int anio) {
 		List<ServicioDTO> listServiciosDto = new ArrayList<>();
 		List<Servicio> serviciosResponse = servicioDao.obtenerServiciosCompradorPeriodo(empleadoId, anio);
+		for (Servicio servicioResp : serviciosResponse) {
+			ServicioDTO servicioDto = new ServicioDTO();
+			modelMapper.map(servicioResp, servicioDto);
+			listServiciosDto.add(servicioDto);
+		}
+		return listServiciosDto;
+	}
+
+	public List<ServicioDTO> obtenerServiciosClaveAnio(String clave, int anio) {
+		List<ServicioDTO> listServiciosDto = new ArrayList<>();
+		Empleado empleado;
+		empleado = empleadoDaoPage.findByClave(clave);
+		List<Servicio> serviciosResponse = servicioDaoPage.findByEmpleadoAndAnioOrderByPeriodo(empleado, anio);
+		if (serviciosResponse.isEmpty()) {
+			throw new NoSuchElementException("No se encontraon registros con los filtros ingresados"); 
+		}
 		for (Servicio servicioResp : serviciosResponse) {
 			ServicioDTO servicioDto = new ServicioDTO();
 			modelMapper.map(servicioResp, servicioDto);

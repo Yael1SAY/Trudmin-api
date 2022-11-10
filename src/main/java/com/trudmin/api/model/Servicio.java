@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -32,18 +33,21 @@ public class Servicio implements Serializable{
 	@Column(name = "id_servicio")
 	@JsonIgnore
 	private long idServicio;
-	
-	//@Column(name = "empleado_id")
-	//private int empleadoId;
-		
+
+	@NotNull(message = "El mes no puede ser nulo")
 	private String mes;
+
+	@NotNull(message = "El anio no puede ser nulo")
 	private int anio;
 	
+	@NotNull(message = "El periodo no puede ser nulo")
 	private String periodo;
 	
+	@NotNull(message = "El total de Solicitudes de pedido no puede ser nulo")
 	@Column(name = "total_Sol_Ped")
 	private int totalSolPed;
 	
+	@NotNull(message = "El total de orden de compra no puede ser nulo")
 	@Column(name = "total_OC")
 	private int totalOC;
 	

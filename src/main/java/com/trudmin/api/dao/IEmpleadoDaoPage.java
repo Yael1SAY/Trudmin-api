@@ -13,4 +13,6 @@ public interface IEmpleadoDaoPage extends JpaRepository<Empleado, Long> {
 
     public Empleado findByUsuario(Usuario usuario);
 
+    public Empleado findByClave(String clave);
+
 }

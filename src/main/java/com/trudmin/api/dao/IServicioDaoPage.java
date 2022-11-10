@@ -15,4 +15,6 @@ public interface IServicioDaoPage extends JpaRepository<Servicio, Long> {
 
     public List<Servicio> findByEmpleadoAndAnioOrderByPeriodo(Empleado empleado, int anio);
 
+    public Servicio findByEmpleadoAndPeriodo(Empleado empleado, String periodo);
+
 }
