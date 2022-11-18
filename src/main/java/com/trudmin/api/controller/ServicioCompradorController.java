@@ -47,20 +47,21 @@ public class ServicioCompradorController {
 
 	@Secured("ROLE_ADMIN")
 	@GetMapping("/obtenerServicios/page/{page}/{size}")
-	Page<ServicioDTO> obtenerUsuariosPage(@PathVariable Integer page, @PathVariable Integer size) {
-		Page<ServicioDTO> servicio = servicioService.obtenerServiciosPage(PageRequest.of(page, size));
+	Page<ServicioDTO> obtenerServiciosPage(@PathVariable Integer page, @PathVariable Integer size) {
+		Page<ServicioDTO> servicio;
+		servicio = servicioService.obtenerServiciosPage(PageRequest.of(page, size));
 		return servicio;
 	}
 
 	@Secured("ROLE_ADMIN")
 	@GetMapping("/obtenerServiciosProductividad/{empleadoId}/{anio}")
 	ResponseEntity<?> obtenerServicioProductividad(@PathVariable Integer empleadoId, @PathVariable Integer anio) {
-		GenericResponse<List<ServicioProductividadDTO>> response = new GenericResponse<List<ServicioProductividadDTO>>();
+		GenericResponse<List<ServicioProductividadDTO>> response = new GenericResponse<>();
 		List<ServicioProductividadDTO> servicio = servicioService.obtenerServicioProductividad(empleadoId, anio);
 		response.setData(servicio);
 		response.setMessage("Se obtuvieron correctamnete los datos");
 		response.setStatus(200);
-		return new ResponseEntity<GenericResponse<List<ServicioProductividadDTO>>>(response, HttpStatus.OK);
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 	@Secured("ROLE_ADMIN")
@@ -99,10 +100,10 @@ public class ServicioCompradorController {
 	}
 
 	@Secured("ROLE_ADMIN")
-	@GetMapping(value = "/obtenerServiciosPorClaveAnio")
-	List<ServicioDTO> obtenerServicioPorClaveAnio(@RequestParam String clave, @RequestParam int anio) {
-		List<ServicioDTO> servicio;
-		servicio = servicioService.obtenerServiciosClaveAnio(clave, anio);
+	@GetMapping(value = "/obtenerServiciosClaveAnio/page/{page}/{size}/{clave}/{anio}")
+	Page<ServicioDTO> obtenerServicioPorClaveAnio(@PathVariable Integer page, @PathVariable Integer size, @PathVariable String clave, @PathVariable int anio) {
+		Page<ServicioDTO> servicio;
+		servicio = servicioService.obtenerServiciosClaveAnio(PageRequest.of(page, size), clave, anio);
 		return servicio;
 	}
 

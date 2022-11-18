@@ -46,9 +46,9 @@ public class ServicioService {
 
 	public Page<ServicioDTO> obtenerServiciosPage(Pageable pageable) {
 		Page<Servicio> entity = servicioDaoPage.findAll(pageable);
-		Page<ServicioDTO> usuarioDto = null;
-		usuarioDto = mapEntityPageIntoDtoPage(entity, ServicioDTO.class);
-		return usuarioDto;
+		Page<ServicioDTO> servicioDto = null;
+		servicioDto = mapEntityPageIntoDtoPage(entity, ServicioDTO.class);
+		return servicioDto;
 	}
 
 	public List<ServicioDTO> obtenerServicios() {
@@ -123,20 +123,16 @@ public class ServicioService {
 		return listServiciosDto;
 	}
 
-	public List<ServicioDTO> obtenerServiciosClaveAnio(String clave, int anio) {
-		List<ServicioDTO> listServiciosDto = new ArrayList<>();
+	public Page<ServicioDTO> obtenerServiciosClaveAnio(Pageable pageable, String clave, int anio) {
 		Empleado empleado;
 		empleado = empleadoDaoPage.findByClave(clave);
-		List<Servicio> serviciosResponse = servicioDaoPage.findByEmpleadoAndAnioOrderByPeriodo(empleado, anio);
-		if (serviciosResponse.isEmpty()) {
+		Page<Servicio> serviciosEntity = servicioDaoPage.findByEmpleadoAndAnioOrderByPeriodo(empleado, anio, pageable);
+		Page<ServicioDTO> serviciosDto;
+		if (!serviciosEntity.hasContent()) {
 			throw new NoSuchElementException("No se encontraon registros con los filtros ingresados"); 
 		}
-		for (Servicio servicioResp : serviciosResponse) {
-			ServicioDTO servicioDto = new ServicioDTO();
-			modelMapper.map(servicioResp, servicioDto);
-			listServiciosDto.add(servicioDto);
-		}
-		return listServiciosDto;
+		serviciosDto = mapEntityPageIntoDtoPage(serviciosEntity, ServicioDTO.class);
+		return serviciosDto;
 	}
 
 	public ServicioDTO obtenerServicioPorId(long servicioId) {
